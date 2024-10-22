@@ -1,9 +1,88 @@
-<div (click)="select()" class="dataset-card-content">
-  <input #fileUpload (change)="onFileSelected($event)" class="file-input" type="file">
-  <div (click)="fileUpload.click()">
+<div (click)="onFileSelected($event)" class="dataset-card-content">
+  <input
+    #fileUpload
+    (change)="onFileSelected($event)"
+    class="file-input"
+    type="file"
+  >
+  <div (click)="isRiboSeq() || fileUpload.click()">
     <div>
-      <p class="bold no-wrap">{{source.name}}</p>
-      <p>{{source.description}}</p>
+      <p class="bold no-wrap">{{ source.name }}</p>
+      <p>{{ source.description }}</p>
     </div>
+  </div>
+</div>
+
+<!-- Popup for Ribo seq data -->
+<div *ngIf="showPopup" class="custom-popup">
+  <div class="popup-content">
+    <h2>Upload RNA and Ribo seq file</h2>
+    <div style="text-align: center;">
+      <p class="outline">The files must have matching column names to perform Ribo-Seq pathway analysis.</p>
+    </div>
+
+    <form>
+      <div class="files-container">
+
+        <!-- RNA-Seq File Upload -->
+        <div class="file-container">
+          <label class="file-label">RNA-Seq File</label>
+          <div class="dataset-card-content">
+            <div id="rna-drop-zone" class="drop-zone"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onRNADrop($event)">
+              <span>Drag & Drop RNA-Seq file here</span>
+              <span>or</span>
+              <button mat-flat-button [color]="'primary'" (click)="rna.click()">Browse</button>
+              <input type="file" #rna id="rna-file-upload" (change)="uploadRNAFile($event)" class="popup-file-input">
+
+              <!-- Display the selected RNA-Seq file name -->
+              <div *ngIf="rnaFileName" class="file-name-display">
+                <span><strong>{{ rnaFileName }}</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ribo-Seq File Upload -->
+        <div class="file-container">
+          <label class="file-label">Ribo-Seq File</label>
+          <div class="dataset-card-content">
+            <div id="ribo-drop-zone" class="drop-zone"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onRiboDrop($event)">
+              <span>Drag & Drop Ribo-Seq file here</span>
+              <span>or</span>
+              <button mat-flat-button [color]="'primary'" (click)="ribo.click()">Browse</button>
+              <input type="file" #ribo id="ribo-file-upload" (change)="uploadRiboFile($event)" class="popup-file-input">
+
+              <div *ngIf="riboFileName" class="file-name-display">
+                <span><strong>{{ riboFileName }}</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Messages -->
+      <div *ngIf="!fileMatching" class="error-message">
+        <label class="error-label">ERROR</label> Files do not have matching column names
+      </div>
+
+      <div *ngIf="!fileValid" class="error-message">
+        <label class="error-label">ERROR</label> File must only contain integer values
+      </div>
+
+      <!-- Buttons to submit or close -->
+      <div class="button-container">
+        <button [disabled]="!filesLoaded || !fileMatching || !fileValid" (click)="uploadRiboData()" mat-flat-button
+                [color]="'primary'">Submit
+        </button>
+        <button (click)="closePopUp()" mat-stroked-button>Close</button>
+      </div>
+
+    </form>
   </div>
 </div>

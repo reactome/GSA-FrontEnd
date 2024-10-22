@@ -239,6 +239,10 @@ mat-icon {
   border-radius: 10px;
   border: 1px solid var(--primary);
   background: var(--surface);
+
+  input {
+    display: none;
+  }
 }
 
 .dataset-card-content:hover {

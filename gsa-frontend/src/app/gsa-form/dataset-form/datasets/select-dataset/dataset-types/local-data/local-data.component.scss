@@ -1,5 +1,166 @@
-.file-input {
-  display: none;
+.custom-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: rgba(255, 255, 255, 1);
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  width: 800px;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1001;
+}
+
+h2 {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 7px !important;
+}
+
+.file-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #006782;
+}
+
+label-error {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #FF0000;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.error-label {
+  color: #ff4d4d;
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 12px;
+}
+
+.error-message {
+  background-color: #ffebeb;
+  border-left: 4px solid #ff4d4d;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.error-message label {
+  margin-right: 10px;
+}
+
+.error-text {
+  color: #ff4d4d;
+  font-weight: bold;
+  font-size: 12px; /* Smaller font size for error message text */
 }
 
 
+.popup-file-input {
+  display: none;
+}
+
+/* Custom file upload button */
+.popup-file-input + label {
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  background-color: #006782;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.popup-file-input + label:hover {
+  background-color: #004959;
+}
+
+.file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Style for Drag-and-Drop Zone */
+.drop-zone {
+  width: 100%;
+  max-width: 100%;
+  height: 80px;
+  border: 2px dashed #006782;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #006782;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.drop-zone.drag-over {
+  background-color: #e0f7fa;
+  border-color: #004959;
+}
+
+.file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.files-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .file-container {
+    width: 100%;
+
+    label {
+      font-size: 14pt;
+    }
+
+    .drop-zone {
+      height: 400px;
+    }
+  }
+}
+
+.bold-text {
+  font-weight: bold;
+}

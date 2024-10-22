@@ -6,6 +6,7 @@ import {UploadData} from "../model/upload-dataset-model";
 import {catchError, EMPTY, Observable, of, throwError} from "rxjs";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {extractErrorMessage} from "../utilities/utils";
+import {formatDate} from "@angular/common";
 
 
 @Injectable({
@@ -17,6 +18,7 @@ export class LoadDatasetService {
     loadingStatusUrl = `${environment.ApiRoot}/data/status/`;
     summaryDataUrl = `${environment.ApiRoot}/data/summary/`;
     uploadDataUrl = `${environment.ApiSecretRoot}/upload`;
+    uploadRiboDataUrl = `${environment.ApiSecretRoot}/uploadRibo`;
 
     constructor(private http: HttpClient, private snackBar: MatSnackBar) {
     }
@@ -63,5 +65,19 @@ export class LoadDatasetService {
                 });
                 return throwError(() => err);    //Rethrow it back to component
             }))
+    }
+
+    uploadRiboFiles(fileRNA: File, fileRibo: File): Observable<UploadData>{
+      const formData = new FormData();
+      formData.append('fileRNA', fileRNA, fileRNA.name);
+      formData.append('fileRibo', fileRibo, fileRibo.name);
+      return this.http.post<UploadData>(this.uploadRiboDataUrl, formData)
+        .pipe(catchError((err: HttpErrorResponse) => {
+          this.snackBar.open("The chosen dataset could not been uploaded: \n"  + extractErrorMessage(err), "Close", {
+            panelClass: ['warning-snackbar'],
+            duration: 10000
+          });
+          return throwError(() => err);    //Rethrow it back to component
+        }))
     }
 }

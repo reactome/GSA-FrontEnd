@@ -31,6 +31,7 @@ import {TourUtilsService} from "../../../services/tour-utils.service";
 
 @Injectable()
 export class DatasetEffects {
+
   upload = createEffect(() =>
     this.actions$.pipe(
       ofType(datasetActions.upload),
@@ -57,6 +58,34 @@ export class DatasetEffects {
       ),
     ),
   );
+
+  uploadRibo = createEffect(() =>
+    this.actions$.pipe(
+      ofType(datasetActions.uploadRibo),
+      tap(({id}) => {
+        this.dialogRef = this.dialog.open(LoadingProgressComponent, {
+          width: '50%',
+          height: '50%',
+          disableClose: true,
+          data: {datasetId: id},
+        });
+      }),
+      exhaustMap(({fileRibo, fileRNA, typeId, id}) =>
+        this.loadDatasetService.uploadRiboFiles(fileRNA, fileRibo).pipe(
+          map((uploadData) =>
+            datasetActions.uploadComplete({
+              id,
+              uploadData,
+              typeId,
+              name: fileRNA.name.substring(0, fileRNA.name.lastIndexOf('.')),
+            })
+          ),
+          catchError((error) => of(datasetActions.uploadError({error, id})))
+        ),
+      ),
+    ),
+  );
+
 
   uploadCompleteToSummary = createEffect(() =>
     this.actions$.pipe(

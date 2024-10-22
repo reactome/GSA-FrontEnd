@@ -32,6 +32,9 @@ export const datasetReducer: ActionReducer<DatasetState> = createReducer(
   on(datasetActions.load, (state, {id}) => datasetAdapter.updateOne({
     id, changes: {loadingStatus: {id: 'unknown', status: 'pending', description: 'Sending load request to server'}, public: true}
   }, state)),
+  on(datasetActions.uploadRibo, (state, {id}) => datasetAdapter.updateOne({
+    id, changes: {loadingStatus: {id: 'unknown', status: 'pending', description: 'Sending your data to servers'}, public: false}
+  }, state)),
   on(datasetActions.upload, (state, {id}) => datasetAdapter.updateOne({
     id, changes: {loadingStatus: {id: 'unknown', status: 'pending', description: 'Sending your data to servers'}, public: false}
   }, state)),

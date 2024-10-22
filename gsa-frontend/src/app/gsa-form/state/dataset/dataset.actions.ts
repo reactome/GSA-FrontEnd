@@ -15,6 +15,7 @@ export const datasetActions = createActionGroup({
         'save': props<{ id: number }>(),
 
         'upload': props<{ file: File, typeId: string, id: number }>(),
+        'uploadRibo': props<{fileRibo: File, fileRNA: File, typeId: string, id: number }>(),
         'upload complete': props<{ uploadData: UploadData, name: string, typeId: string, id: number }>(),
         'upload error': props<{ error: any, id: number }>(),
 
@@ -45,7 +46,6 @@ export const datasetActions = createActionGroup({
         'set comparison group 2': props<{ group: string, id: number }>(),
         'set covariate value': props<{ group: string, value: boolean, id: number }>(),
         'set covariates value': props<{ value: boolean, id: number }>(),
-
 
         'set summary parameters': props<{ id :number, parameters: Parameter[]}>(),
         'open summary parameters': props<{ id : number }>(),

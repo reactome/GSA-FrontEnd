@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ChangeDetectorRef} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
@@ -25,25 +25,41 @@ export class AnnotateDatasetComponent implements OnInit {
   annotateDataStep: FormGroup;
   tableSettings: Subset<Settings>;
   screenIsSmall: boolean = false;
+  isRibo: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver, private store: Store) {
+  constructor(private formBuilder: FormBuilder, private responsive: BreakpointObserver, private store: Store, private cdr: ChangeDetectorRef) {
     this.annotateDataStep = this.formBuilder.group({
       address: ['', Validators.required]
     });
   }
-
 
   ngOnInit() {
     this.tableSettings = {
       renameRows: false,
       addRow: false
     };
-    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));
+    this.dataset$ = this.store.select(datasetFeature.selectDataset(this.datasetId));  // Data is mocked from the request TODO do NOT merge moch data !!!
+
+    // check for Ribo dataset for automatic Seqeuencing Type annotation
+    this.dataset$.subscribe((dataset: PDataset | undefined) => {
+      if(dataset) {
+        const summary = dataset.summary;
+        const type = summary?.type;
+        if (type === "ribo_seq") {
+          this.isRibo = true;
+        }
+      }
+    })
+
     this.annotations$ = this.dataset$.pipe(
       filter(isDefined),
-      map(d => d.annotations),
-      filter(isDefined)
+      map(d => {
+        let annotations = d.annotations;
+        return annotations;
+      }),
+      filter(isDefined),
     );
+
     this.responsive.observe(Breakpoints.Small).subscribe(result => this.screenIsSmall = result.matches);
   }
 
@@ -64,7 +80,6 @@ export class AnnotateDatasetComponent implements OnInit {
 
   protected readonly datasetActions = datasetActions;
 }
-
 
 
 
